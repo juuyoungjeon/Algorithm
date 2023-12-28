@@ -17,9 +17,9 @@ public class Main {
 		if(N % A == 0 || N % B == 0 || N % C == 0) {
 			ans = 1;
 		}else {
-			for(int i = 0; i < N/A; i++) {
-				for(int j = 0; j < N/B; j++) {
-					for(int k = 0; k < N/C; k++) {
+			for(int i = 0; i <= N/A; i++) {
+				for(int j = 0; j <= N/B; j++) {
+					for(int k = 0; k <= N/C; k++) {
 						if(A*i + B*j + C*k == N) {
 							ans = 1;
 						}
