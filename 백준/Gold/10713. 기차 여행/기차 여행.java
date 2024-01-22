@@ -49,7 +49,7 @@ public class Main {
 		}
 		
 		long ans = 0; 
-		int psum = 0;
+		long psum = 0;
 
 		for(int i = 1; i < N; i++) {
 			psum += d[i];
