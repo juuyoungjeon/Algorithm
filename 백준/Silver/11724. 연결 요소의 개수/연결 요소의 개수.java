@@ -2,48 +2,54 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-
-	static ArrayList<Integer>[] adj;
-	static boolean visited[];
-	
+	static int n, m;
+	static boolean[] visited;
+	static ArrayList<ArrayList<Integer>> list;
+	static int cnt;
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	StringTokenizer st = new StringTokenizer(br.readLine());
-	int n = Integer.parseInt(st.nextToken());
-	int m = Integer.parseInt(st.nextToken());
-	adj = new ArrayList[n+1];
-	visited = new boolean[n+1];
-	int v1,v2,ans = 0;
-	
-	for(int i = 1; i < n+1; i++) {
-		adj[i] = new ArrayList<Integer>();
-	}
-	for(int i = 0; i < m; i++) {
-		st = new StringTokenizer(br.readLine());
-		v1 = Integer.parseInt(st.nextToken());
-		v2 = Integer.parseInt(st.nextToken());
-		adj[v1].add(v2);
-		adj[v2].add(v1);
-	}
-	for(int i = 1; i < n+1; i++) {
-		if(!visited[i]) {
-			dfs(i);
-			ans++;
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
+		
+		list = new ArrayList<>();
+		for(int i = 0; i <= n; i++) {
+			list.add(new ArrayList<>());
 		}
-	}
-	System.out.println(ans);
-
-	}
-	
-	static void dfs(int v) {
-		if(visited[v]) {
-			return;
+		
+		visited = new boolean[n+1];
+		
+		for(int i = 0; i < m; i++) {
+			st = new StringTokenizer(br.readLine());
+			
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			
+			list.get(a).add(b);
+			list.get(b).add(a);
 		}
-		visited[v] = true;
-		for(int i : adj[v]) {
+		
+		cnt = 0;
+		for(int i = 1; i <= n; i++) {
 			if(!visited[i]) {
 				dfs(i);
+				cnt++;
+			}
+		}
+		
+		System.out.println(cnt);
+	}
+	
+	public static void dfs(int start) {
+		if(visited[start]) return;
+		
+		visited[start] = true;
+		
+		for(int next : list.get(start)) {
+			if(!visited[next]) {
+				dfs(next);
 			}
 		}
 	}
