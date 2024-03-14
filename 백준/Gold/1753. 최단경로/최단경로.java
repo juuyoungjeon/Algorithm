@@ -2,138 +2,79 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-
-	static class Node{
-		int idx, cost;
-
+	static int[] dist;
+	static int v, e, k;
+	static class Node implements Comparable<Node>{
+		int idx;
+		int cost;
 		public Node(int idx, int cost) {
 			this.idx = idx;
 			this.cost = cost;
 		}
+		@Override
+		public int compareTo(Node o) {
+			// TODO Auto-generated method stub
+			return this.cost - o.cost;
+		}
 	}
-
-	static int V, E, K;
-	static ArrayList<ArrayList<Node>> graph;
-	static int[] distance;
-
+	static ArrayList<ArrayList<Node>> list;
 	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringBuilder sb = new StringBuilder();
 		StringTokenizer st = new StringTokenizer(br.readLine());
-
-		V = Integer.parseInt(st.nextToken()); //정점
-		E = Integer.parseInt(st.nextToken()); //간선
-		K = Integer.parseInt(br.readLine()); //시작정점
-
-		graph = new ArrayList<ArrayList<Node>>();
-
-		for(int i = 0; i < V+1; i++) {
-			graph.add(new ArrayList<Node>());
+		
+		v = Integer.parseInt(st.nextToken());
+		e = Integer.parseInt(st.nextToken());
+		
+		k = Integer.parseInt(br.readLine());
+		
+		list = new ArrayList<>();
+		for(int i = 0; i <= v; i++) {
+			list.add(new ArrayList<>());
 		}
-		for(int i = 0; i < E; i++) {
+		
+		dist = new int[v + 1];
+		for(int i = 1; i <= v; i++) {
+			dist[i] = Integer.MAX_VALUE;
+		}
+		
+		for(int i = 0; i < e; i++) {
 			st = new StringTokenizer(br.readLine());
-
-			int start = Integer.parseInt(st.nextToken());
-			int end = Integer.parseInt(st.nextToken());
-			int value = Integer.parseInt(st.nextToken());
-
-			graph.get(start).add(new Node(end, value));
-
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			int c = Integer.parseInt(st.nextToken());
+			
+			list.get(a).add(new Node(b, c));
 		}
 		
-		distance = new int[V+1];
-		int INF = Integer.MAX_VALUE;
+		bfs();
 		
-		for(int i = 0; i < V + 1; i++) {
-			distance[i] = INF;
+		for(int i = 1; i <= v; i++) {
+			sb.append(dist[i] != Integer.MAX_VALUE? dist[i] : "INF").append("\n");
 		}
 		
-		PriorityQueue<Node> q = new PriorityQueue<Node>((o1, o2) -> Integer.compare(o1.cost,  o2.cost));
+		System.out.println(sb);
 		
-		q.offer(new Node(K, 0));
+	}
+	public static void bfs() {
+		PriorityQueue<Node> pq = new PriorityQueue<>();
+		pq.add(new Node(k, 0));
+		dist[k] = 0;
 		
-		distance[K] = 0;
-		
-		while(!q.isEmpty()) {
-			Node tmp = q.poll();
+		while(!pq.isEmpty()) {
+			Node now = pq.poll();
+			if(dist[now.idx] < now.cost) continue;
 			
-			if(distance[tmp.idx] < tmp.cost) {
-				continue;
-			}
-			
-			for(int i = 0; i < graph.get(tmp.idx).size(); i++) {
-				Node next = graph.get(tmp.idx).get(i);
+			for(int i = 0; i < list.get(now.idx).size(); i++) {
+				Node next = list.get(now.idx).get(i);
 				
-				if(distance[next.idx] > tmp.cost + next.cost) {
-					distance[next.idx] = tmp.cost+next.cost;
-					q.offer(new Node(next.idx, distance[next.idx]));
+				if(dist[next.idx] > now.cost + next.cost) {
+					dist[next.idx] = now.cost + next.cost;
+					pq.add(new Node(next.idx, dist[next.idx]));
 				}
 			}
 		}
-		for(int k = 1; k < V + 1; k++) {
-		System.out.println(distance[k] != INF? distance[k] : "INF");
 	}
-		
-	}
-}
 
-//public class JUN1753_Jeonjuyoung {
-//
-//	static int V, E, K;
-//	static int start;
-//	public static void main(String[] args) throws IOException {
-//
-//		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-//		StringTokenizer st = new StringTokenizer(br.readLine());
-//
-//		V = Integer.parseInt(st.nextToken()); //정점
-//		E = Integer.parseInt(st.nextToken()); //간선
-//		K = Integer.parseInt(br.readLine()); //시작정점
-//
-//		int[][] adjMatrix = new int[V+1][V+1];
-//		for(int i =0; i < E; i++) {
-//			st = new StringTokenizer(br.readLine());
-//
-//			int start = Integer.parseInt(st.nextToken());
-//			int end = Integer.parseInt(st.nextToken());
-//			int value = Integer.parseInt(st.nextToken());
-//
-//			adjMatrix[start][end] = value;
-//
-//		}
-//
-//		final int INF = Integer.MAX_VALUE;
-//		int[] distance = new int[V+1];
-//		boolean[] visited = new boolean[V+1];
-//
-//		Arrays.fill(distance, INF);
-//		distance[K] = 0;
-//
-//		int min, current;
-//		for(int c = 0; c < V + 1; c++) {
-//			current = -1;
-//			min = INF;
-//
-//			for(int i = 1; i < V + 1; i++) {
-//				if(!visited[i] && min > distance[i]) {
-//					min = distance[i];
-//					current = i;
-//				}
-//			}
-//
-//			if(current == -1) break;
-//			visited[current] = true;
-//
-//			for(int j = 1; j < V + 1; j++) {
-//				if(!visited[j] && adjMatrix[current][j] != 0
-//						&& distance[j] > min + adjMatrix[current][j]) {
-//					distance[j] = min + adjMatrix[current][j];
-//				}
-//			}
-//		}
-//
-//		for(int k = 1; k < V + 1; k++) {
-//			System.out.println(distance[k] != INF? distance[k] : "INF");
-//		}
-//	}
-//
-//}
+}
