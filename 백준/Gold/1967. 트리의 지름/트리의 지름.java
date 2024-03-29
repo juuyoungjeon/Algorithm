@@ -39,26 +39,24 @@ public class Main {
 			list.get(b).add(new Node(a, c));
 		}
 		int max = 0;
+        ans = 0;
 		for(int i = 1; i <= n; i++) {
-			ans = 0;
+			
 			visited = new boolean[n+1];
 			dfs(i, 0);
-			max = Math.max(max, ans);
 		}
-//		System.out.println(ans);
-		System.out.println(max);
+		System.out.println(ans);
 		
 	}
 	
 	public static void dfs(int start, int sum) {
 		visited[start] = true;
+		ans = (ans < sum) ? sum : ans;
 		for(Node next : list.get(start)) {
 			if(!visited[next.index]) {
-//				ans += next.cost;
 				dfs(next.index, sum + next.cost);
 			}
 		}
-		ans = (ans < sum) ? sum : ans;
 	}
 
 }
