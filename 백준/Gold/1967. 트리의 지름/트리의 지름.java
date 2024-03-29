@@ -2,53 +2,63 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-
 	static class Node{
 		int index;
 		int cost;
-		
 		public Node(int index, int cost) {
 			this.index = index;
 			this.cost = cost;
 		}
 	}
-	
-	static ArrayList<Node> list[];
-	static int N;
-	static int ans;
+	static ArrayList<ArrayList<Node>> list;
 	static boolean[] visited;
+	static int ans;
+	static int[] cost;
 	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		N = Integer.parseInt(br.readLine());
-		list = new ArrayList[N + 1];
-		for(int i = 1; i < N + 1; i++) {
-			list[i] = new ArrayList<Node>();
+		StringTokenizer st;
+		
+		int n = Integer.parseInt(br.readLine());
+		
+		list = new ArrayList<>();
+		for(int i = 0; i <= n; i++) {
+			list.add(new ArrayList<>());
 		}
-		for(int i = 0; i < N - 1; i++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			int from = Integer.parseInt(st.nextToken());
-			int to = Integer.parseInt(st.nextToken());
-			int len = Integer.parseInt(st.nextToken());
-			list[from].add(new Node(to, len));
-			list[to].add(new Node(from, len));
+		visited = new boolean[n + 1];
+		cost = new int[n + 1];
+		
+		for(int i = 0; i < n - 1; i++) {
+			st = new StringTokenizer(br.readLine());
 			
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			int c = Integer.parseInt(st.nextToken());
+			
+			list.get(a).add(new Node(b, c));
+			list.get(b).add(new Node(a, c));
 		}
-		ans = 0;
-		for(int i = 1; i <= N; i++) {
-			visited = new boolean[N + 1];
-			visited[i] = true;
-			dfs(i , 0);
+		int max = 0;
+		for(int i = 1; i <= n; i++) {
+			ans = 0;
+			visited = new boolean[n+1];
+			dfs(i, 0);
+			max = Math.max(max, ans);
 		}
-		System.out.println(ans);
+//		System.out.println(ans);
+		System.out.println(max);
+		
 	}
-	private static void dfs(int index, int cost) {
-		for(Node node : list[index]) {
-			if(!visited[node.index]) {
-				visited[node.index] = true;
-				dfs(node.index, cost + node.cost);
+	
+	public static void dfs(int start, int sum) {
+		visited[start] = true;
+		for(Node next : list.get(start)) {
+			if(!visited[next.index]) {
+//				ans += next.cost;
+				dfs(next.index, sum + next.cost);
 			}
 		}
-		ans = (ans < cost)? cost : ans;
+		ans = (ans < sum) ? sum : ans;
 	}
 
 }
