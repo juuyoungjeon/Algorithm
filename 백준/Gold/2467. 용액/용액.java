@@ -2,35 +2,40 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-
+	static int N;
+	static long[] arr;
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int n = Integer.parseInt(br.readLine());
+		StringTokenizer st;
 		
-		long[] arr = new long[n];
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i=0; i<n; i++) {
+		N = Integer.parseInt(br.readLine());
+		
+		arr = new long[N];
+		
+		st = new StringTokenizer(br.readLine());
+		for(int i = 0; i < N; i++) {
 			arr[i] = Long.parseLong(st.nextToken());
 		}
 		
-		int left =0;
-		int right =n-1;
-		int ml =0, mr = 0;
+		int s = 0, e = N-1;
+		int ml = 0, mr = 0;
 		long min = Long.MAX_VALUE;
-		while(left<right) {
-			long sum = arr[left]+arr[right];
+		while(s<e) {
+			long sum = arr[s] + arr[e];
 			if(min > Math.abs(sum)) {
 				min = Math.abs(sum);
-				ml = left; mr = right;
+				ml = s; mr = e;
 			}
-			if(sum>=0) {
-				right--;	
+			if(sum >= 0) {
+				e--;
 			}else {
-				left++;
+				s++;
 			}
 		}
-		System.out.println(arr[ml] +" "+arr[mr]);
+		
+		System.out.print(arr[ml] + " " + arr[mr]);
 	}
+	
 
 }
