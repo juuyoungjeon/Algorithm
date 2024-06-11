@@ -2,37 +2,37 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-
+	static int G;
+	static ArrayList<Integer> list;
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
+		G = Integer.parseInt(br.readLine());
 		
-		int G = Integer.parseInt(br.readLine());
-		//G = 현재 몸무게의 제곱 - 성원이가 기억하고 있던 몸무게 제곰
+		list = new ArrayList<>();
 		
-		long a = 2;//현재
-		long b = 1;//기억
+		int s = 2, e = 1;
 		boolean check = false;
-		while(b < a && a < 100_000) {
-			if(a*a - b*b == G) {
-				sb.append(a).append("\n");
+		while(e < s && s < G) {
+			if((s+e)*(s-e) == G) {
+				sb.append(s).append("\n");
 				check = true;
 			}
 			
-			if(a*a - b*b > G) {
-				b++;
+			if((s+e)*(s-e) > G) {
+				e++;
 			}else {
-				a++;
+				s++;
 			}
 		}
 		
 		if(check) {
 			System.out.println(sb);
 		}else {
-			System.out.println("-1");
+			System.out.println(-1);
 		}
-		
+
 	}
 
 }
