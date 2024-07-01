@@ -2,51 +2,45 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static int N;
-	static int[][] adjMatrix;
+	static int N, M;
+	static int ans;
 	static boolean[] visited;
-	
+	static ArrayList<ArrayList<Integer>> list;
 	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
 		
 		N = Integer.parseInt(br.readLine());
-		int M = Integer.parseInt(br.readLine());
-	
-		adjMatrix = new int[N+1][N+1];
+		M = Integer.parseInt(br.readLine());
 		
-		for(int i = 0; i < M; i++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			
-			int from = Integer.parseInt(st.nextToken());
-			int to = Integer.parseInt(st.nextToken());
-			
-			adjMatrix[from][to] = adjMatrix[to][from] = 1;
+		list = new ArrayList<>();
+		for(int i = 0; i <= N; i++) {
+			list.add(new ArrayList<>());
 		}
 		
-		visited = new boolean[N+1]; 
-		bfs(1);
+		visited = new boolean[N+1];
+		for(int i = 0; i < M; i++) {
+			st = new StringTokenizer(br.readLine());
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			
+			list.get(a).add(b);
+			list.get(b).add(a);
+		}
+		dfs(1);
+		System.out.println(ans);
 		
 	}
-
-	private static void bfs(int start) {
-		Queue<Integer> q = new LinkedList<Integer>();
-
-		q.offer(start);
+	public static void dfs(int start) {
 		visited[start] = true;
-		
-		int current = 0;
-		int cnt = 0;
-		while(!q.isEmpty()) {
-			current = q.poll();
-			for(int i = 1; i <= N; i++) {
-				if(!visited[i] && (adjMatrix[current][i] != 0 || adjMatrix[i][current] != 0)) {
-					q.offer(i);
-					visited[i] = true;
-					cnt++;
-				}
+		for(int a : list.get(start)) {
+			if(!visited[a]) {
+				visited[a] = true;
+				ans++;
+				dfs(a);
 			}
 		}
-		System.out.println(cnt);
 	}
 
 }
