@@ -2,28 +2,26 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static int n, m;
+	static int N, M;
+	static int cnt;
 	static boolean[] visited;
 	static ArrayList<ArrayList<Integer>> list;
-	static int cnt;
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
 		
+		visited = new boolean[N+1];
 		list = new ArrayList<>();
-		for(int i = 0; i <= n; i++) {
+		for(int i = 0; i <= N; i++) {
 			list.add(new ArrayList<>());
 		}
 		
-		visited = new boolean[n+1];
-		
-		for(int i = 0; i < m; i++) {
+		for(int i = 0; i < M; i++) {
 			st = new StringTokenizer(br.readLine());
-			
 			int a = Integer.parseInt(st.nextToken());
 			int b = Integer.parseInt(st.nextToken());
 			
@@ -31,8 +29,7 @@ public class Main {
 			list.get(b).add(a);
 		}
 		
-		cnt = 0;
-		for(int i = 1; i <= n; i++) {
+		for(int i = 1; i <= N; i++) {
 			if(!visited[i]) {
 				dfs(i);
 				cnt++;
@@ -41,15 +38,12 @@ public class Main {
 		
 		System.out.println(cnt);
 	}
-	
 	public static void dfs(int start) {
-		if(visited[start]) return;
-		
 		visited[start] = true;
-		
-		for(int next : list.get(start)) {
-			if(!visited[next]) {
-				dfs(next);
+		for(int a : list.get(start)) {
+			if(!visited[a]) {
+				visited[a] = true;
+				dfs(a);
 			}
 		}
 	}
