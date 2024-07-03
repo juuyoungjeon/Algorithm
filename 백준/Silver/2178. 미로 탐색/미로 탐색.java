@@ -2,67 +2,57 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static int N, M;
-	static int[][] arr;
-	static int ans;
-	static class Node{
-		int x;
-		int y;
-		int cnt;
-		public Node(int x, int y, int cnt) {
-			this.x = x;
-			this.y = y;
-			this.cnt = cnt;
-		}
-	}
+
+	static int[][] map;
+	static int n;
+	static int m;
 	static boolean[][] visited;
-	static int[] dx = {1,0,-1,0};
-	static int[] dy = {0,1,0,-1};
+	static int[] dx = {-1, 1, 0, 0};
+	static int[] dy = {0, 0, -1, 1};
+	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
 		
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
-		
-		arr = new int[N][M];
-		visited = new boolean[N][M];
-		
-		for(int i = 0; i < N; i++) {
+		map = new int[n][m];
+		for(int i = 0; i < n; i++) {
 			String s = br.readLine();
-			for(int j = 0; j < M; j++) {
-				arr[i][j] = Character.getNumericValue(s.charAt(j));
+			for(int j = 0; j < m; j++) {
+				map[i][j] = s.charAt(j) - '0';
 			}
 		}
-//		ans = Integer.MIN_VALUE;
-		ans = 0;
-		bfs();
-		System.out.println(ans);
 		
+		visited = new boolean[n][m];
+		visited[0][0] =true;
+		bfs(0,0);
+		System.out.println(map[n-1][m-1]);
+
 	}
-	public static void bfs() {
-		Queue<Node> q = new LinkedList<>();
-		q.add(new Node(0,0,1));
-		visited[0][0] = true;
+	public static void bfs(int x, int y) {
+		Queue<int[]> q = new LinkedList<>();
+		q.add(new int[] {x,y});
 		
 		while(!q.isEmpty()) {
-			Node now = q.poll();
+			int now[] = q.poll();
+			int nowX = now[0];
+			int nowY = now[1];
 			
 			for(int i = 0; i < 4; i++) {
-				int nx = now.x + dx[i];
-				int ny = now.y + dy[i];
+				int nextX = nowX + dx[i];
+				int nextY = nowY + dy[i];
+				if(nextX < 0 || nextY <0 || nextX >= n || nextY >= m)
+					continue;
+				if(visited[nextX][nextY] || map[nextX][nextY] == 0)
+					continue;
 				
-				if(nx < 0 || nx > N - 1 || ny < 0 || ny > M - 1) continue;
-				if(visited[nx][ny] || arr[nx][ny] == 0) continue;
+                
+				q.add(new int[] {nextX, nextY});
+				map[nextX][nextY] = map[nowX][nowY] + 1;
+				visited[nextX][nextY] = true;
 				
-				q.add(new Node(nx, ny, now.cnt + 1));
-				visited[nx][ny] = true;
-			}
-			
-			if(now.x == N - 1 && now.y == M - 1) {
-//				ans = Math.max(ans, now.cnt);
-				ans = now.cnt;
 			}
 		}
 	}
