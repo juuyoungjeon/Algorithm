@@ -2,74 +2,77 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static int n, m, cnt = Integer.MAX_VALUE;
-	static int[][] arr;
-	static boolean[][] visited;
+	static int N, M;
+	static int[][] map;
+	static int ans;
 	static class Node implements Comparable<Node>{
 		int x;
 		int y;
-		int cost;
-		public Node(int x, int y, int cost) {
+		int cnt;
+		public Node(int x, int y, int cnt) {
 			this.x = x;
 			this.y = y;
-			this.cost = cost;
+			this.cnt = cnt;
 		}
 		@Override
 		public int compareTo(Node o) {
-			// TODO Auto-generated method stub
-			return this.cost - o.cost;
+			return this.cnt - o.cnt;
 		}
 	}
 	static int[] dx = {1,0,-1,0};
 	static int[] dy = {0,1,0,-1};
+	static boolean[][] visited;
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		m = Integer.parseInt(st.nextToken());
-		n = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		N = Integer.parseInt(st.nextToken());
 		
-		arr = new int[n+1][m+1];
-		visited = new boolean[n+1][m+1];
+		map = new int[N][M];
+		visited = new boolean[N][M];
 		
-		for(int i = 1; i <= n; i++) {
+		for(int i = 0; i < N; i++) {
 			String s = br.readLine();
-			for(int j = 1; j <= m; j++) {
-				arr[i][j] = s.charAt(j - 1) -'0';
+			for(int j = 0; j < M; j++) {
+				map[i][j] = s.charAt(j) - '0';
 			}
 		}
-		bfs();
-		System.out.println(cnt);
+		
+		bfs(0,0);
+		
+		System.out.println(ans);
 	}
-	public static void bfs() {
+	public static void bfs(int x, int y) {
 		Queue<Node> q = new PriorityQueue<>();
-		q.add(new Node(1,1,0));
-		visited[1][1] = true;
+		q.add(new Node(x,y,0));
+		visited[x][y] = true;
 		
 		while(!q.isEmpty()) {
 			Node now = q.poll();
-			if(now.x == n && now.y == m) {
-//				return now.cost;
-				cnt = now.cost;
+			if(now.x == N - 1 && now.y == M - 1) {
+				ans = now.cnt;
 			}
 			for(int i = 0; i < 4; i++) {
 				int nx = now.x + dx[i];
 				int ny = now.y + dy[i];
 				
-				
-				if(nx < 1 || nx > n || ny < 1 || ny > m) continue;
+				if(nx < 0 || nx >= N || ny < 0 || ny >= M) continue;
 				if(visited[nx][ny]) continue;
-				if(arr[nx][ny] == 1) {
-					q.add(new Node(nx, ny, now.cost + 1));
+//				if(map[nx][ny] == 1) now.cnt += 1;
+//				q.add(new Node(nx, ny, now.cnt));
+//				visited[nx][ny] = true;
+				if(map[nx][ny] == 1) {
+					q.add(new Node(nx, ny, now.cnt + 1));
 					visited[nx][ny] = true;
 				}else {
-					q.add(new Node(nx, ny, now.cost));
+					q.add(new Node(nx,ny,now.cnt));
 					visited[nx][ny] = true;
 				}
-				
 			}
 		}
-//		return 0;
 	}
+	
+
 }
