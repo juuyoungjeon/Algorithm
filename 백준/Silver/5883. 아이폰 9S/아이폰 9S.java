@@ -4,8 +4,10 @@ import java.io.*;
 public class Main {
 	static int N;
 	static int[] arr;
-	static HashSet<Integer> set = new HashSet<>();
-	static int ans = 1;
+	static HashSet<Integer> hs = new HashSet<>();
+	static ArrayList<Integer> list;
+	static int cnt = 1;
+	static int max = 1;
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -16,25 +18,26 @@ public class Main {
 		
 		for(int i = 0; i < N; i++) {
 			arr[i] = Integer.parseInt(br.readLine());
-			
-			set.add(arr[i]);
+			hs.add(arr[i]);
 		}
 		
-		for(int k : set) {
-			int cnt = 1;
-			int now = arr[0];
+		for(int c : hs) {
+			cnt = 1;
+			int prev = arr[0];
 			for(int i = 1; i < N; i++) {
-				if(arr[i] == k) continue;
-				if(now != arr[i]) {
+				if(arr[i] == c) continue;
+				if(prev != arr[i]) {
 					cnt = 1;
 				}else {
 					cnt++;
-					ans = Math.max(ans, cnt);
 				}
-				now = arr[i];
+				max = Math.max(max, cnt);
+				prev = arr[i];
 			}
 		}
-		System.out.println(ans);
+		
+		System.out.println(max);
+		
 	}
 
 }
