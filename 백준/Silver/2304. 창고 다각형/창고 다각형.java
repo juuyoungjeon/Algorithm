@@ -2,7 +2,6 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-
     static class LowHigh{
         int low;
         int high;
