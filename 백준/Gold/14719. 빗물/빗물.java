@@ -2,8 +2,11 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static int H, W;
+	static int H,W;
 	static int[] arr;
+	static int maxHeight;
+	static int sum;
+	static int idx, check;
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,25 +20,30 @@ public class Main {
 		st = new StringTokenizer(br.readLine());
 		for(int i = 0; i < W; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
-		}
-		int water = 0;
-		for(int i = 1; i < W - 1; i++) { //인덱스 별 모이는 빗물. 첫, 마지막 제외
-			int left = 0;
-			int right = 0;
-
-			for(int j = 0; j < i; j++) {
-				left = Math.max(arr[j], left);
+			if(arr[i] >= check) {
+				check = arr[i];
+				idx = i;
 			}
-
-			for(int j = i + 1; j < W; j++) {
-				right = Math.max(arr[j], right);
-			}
-
-			if(arr[i] < left && arr[i] < right) water += Math.min(left, right) - arr[i];
-
-
 		}
-		System.out.println(water);
+
+		maxHeight = arr[0];
+		for(int i = 1; i < idx; i++) {
+			if(maxHeight < arr[i]) {
+				maxHeight = arr[i];
+			}else {
+					sum += maxHeight - arr[i]; 
+			}
+		}
+
+		maxHeight = arr[W-1];
+		for(int i = W-2; i > idx; i--) {
+			if(maxHeight < arr[i]) {
+				maxHeight = arr[i];
+			}else {
+					sum += maxHeight-arr[i];
+			}
+		}
+		System.out.println(sum);
 	}
 
 }
