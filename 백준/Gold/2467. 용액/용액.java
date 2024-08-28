@@ -3,7 +3,7 @@ import java.io.*;
 
 public class Main {
 	static int N;
-	static long[] arr;
+	static int[] arr;
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -11,22 +11,25 @@ public class Main {
 		
 		N = Integer.parseInt(br.readLine());
 		
-		arr = new long[N];
-		
+		arr = new int[N];
 		st = new StringTokenizer(br.readLine());
 		for(int i = 0; i < N; i++) {
-			arr[i] = Long.parseLong(st.nextToken());
+			arr[i] = Integer.parseInt(st.nextToken());
 		}
 		
-		int s = 0, e = N-1;
-		int ml = 0, mr = 0;
-		long min = Long.MAX_VALUE;
-		while(s<e) {
+		int s = 0;
+		int e = N - 1;
+		int bs = 0;
+		int be = 0;
+		long min = Integer.MAX_VALUE;
+		while(s < e) {
 			long sum = arr[s] + arr[e];
 			if(min > Math.abs(sum)) {
 				min = Math.abs(sum);
-				ml = s; mr = e;
+				bs = s;
+				be = e;
 			}
+			
 			if(sum >= 0) {
 				e--;
 			}else {
@@ -34,8 +37,9 @@ public class Main {
 			}
 		}
 		
-		System.out.print(arr[ml] + " " + arr[mr]);
+		System.out.println(arr[bs] + " " + arr[be]);
+		
+		
 	}
-	
 
 }
