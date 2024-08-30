@@ -2,47 +2,46 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-
+	static int N, K;
+	static int[] S;
+	static ArrayList<Integer> list = new ArrayList<>();
+	static int odd;
+	static int max;
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
+
+		N = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
 		
-		int N = Integer.parseInt(st.nextToken());
-		int K = Integer.parseInt(st.nextToken());
-		
-		boolean[] arr = new boolean[N];
-		
+		S = new int[N];
+
 		st = new StringTokenizer(br.readLine());
 		for(int i = 0; i < N; i++) {
-			int num = Integer.parseInt(st.nextToken());
-			arr[i] = num % 2 == 0;
+			S[i] = Integer.parseInt(st.nextToken());
 		}
 		
-		int maxLen = 0;
-		int l = 0;
-		int r = 0;
-		int cnt = 0;
-		
-		while(r < N) {
-			if(cnt < K) {
-				if(!arr[r]) {//홀수이면
-					cnt++;
+		int s = 0;
+		int e = 0;
+		while(e < N) {
+			if(odd < K) {//홀수 갯수가 K보다 적을때
+				if(S[e] % 2 == 1) {
+					odd++;
 				}
-				r++;
-				maxLen = Math.max(r - l - cnt, maxLen);
-			}else if(arr[r]) {//짝수이면
-				r++;
-				maxLen = Math.max(r - l - cnt, maxLen);
-			}else {
-				if(!arr[l]) {
-					cnt--;
+				e++;
+				max = Math.max(max, e-s-odd);
+			}else if(S[e] % 2 == 0) {//홀수 갯수가 K개 이상이면서, 지금 S[e]가 짝수
+				e++;
+				max = Math.max(max, e-s-odd);
+			}else {//홀수 갯수가 K개 이상이면서, 지금 S[e]가 홀수
+				if(S[s] % 2 == 1) {
+					odd--;
 				}
-				l++;
+				s++;
 			}
 		}
-		
-		System.out.println(maxLen);
+		System.out.println(max);
 	}
 
 }
