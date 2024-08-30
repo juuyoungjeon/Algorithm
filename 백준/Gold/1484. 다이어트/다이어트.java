@@ -3,36 +3,45 @@ import java.io.*;
 
 public class Main {
 	static int G;
-	static ArrayList<Integer> list;
+	//G = (현재몸무게)^2 - (기억몸무게)^2
+	static int cnt;
+	static ArrayList<Integer> list = new ArrayList<>();
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringBuilder sb = new StringBuilder();
+		
 		G = Integer.parseInt(br.readLine());
 		
-		list = new ArrayList<>();
-		
-		int s = 2, e = 1;
+		int s = 1;//기억
+		int e = 2;//현재
+		int sum = 0;
 		boolean check = false;
-		while(e < s && s < G) {
-			if((s+e)*(s-e) == G) {
-				sb.append(s).append("\n");
+		while(s < e && e < G) {
+			sum = (e + s)*(e - s);//e*e-s*s
+			if(sum == G) {
+				list.add(e);
 				check = true;
-			}
-			
-			if((s+e)*(s-e) > G) {
-				e++;
-			}else {
 				s++;
+				e++;
+			}else if(sum > G) {
+				s++;
+			}else if(sum < G) {
+				e++;
 			}
 		}
+		//처음과 끝
 		
+		Collections.sort(list);
+		for(int i : list) {
+			sb.append(i).append("\n");
+		}
 		if(check) {
 			System.out.println(sb);
 		}else {
 			System.out.println(-1);
 		}
-
+		
 	}
 
 }
