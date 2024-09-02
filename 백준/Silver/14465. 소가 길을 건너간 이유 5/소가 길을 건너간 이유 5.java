@@ -1,24 +1,36 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
+import java.io.*;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int n = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
-        int b = Integer.parseInt(st.nextToken());
-        int[] arr = new int[n+1];
-        while (b-->0) arr[Integer.parseInt(br.readLine())] = 1;
-        for (int i = 1; i <= k; i++)
-            arr[i] += arr[i-1];
+	static int N,K,B;
+	static int cnt;
+	static int minus = Integer.MAX_VALUE;
+	static int[] arr;
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		
+		N = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+		B = Integer.parseInt(st.nextToken());
+		
+		arr = new int[N+1];
+		
+		Arrays.fill(arr, 1);
+		
+		for(int i = 0; i < B; i++) {
+			arr[Integer.parseInt(br.readLine())] = 0;
+		}
+		
+		for(int i = 1; i <= N; i++) {
+			arr[i] += arr[i-1];
+		}
+		for(int i = K; i <= N; i++) {
+			minus = Math.min(minus, K - (arr[i] - arr[i - K]));
+		}
+		
+		System.out.println(minus);
+	}
 
-        int min = arr[k];
-        for (int i = k+1; i <= n; i++) {
-            arr[i] += arr[i-1];
-            min = Math.min(min, arr[i]-arr[i-k]);
-        }
-        System.out.println(min);
-    }
 }
