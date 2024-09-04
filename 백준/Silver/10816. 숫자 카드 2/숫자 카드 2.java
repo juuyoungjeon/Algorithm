@@ -1,88 +1,72 @@
-import java.util.Arrays;
-import java.util.StringTokenizer;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.IOException;
- 
+import java.util.*;
+import java.io.*;
+
 public class Main {
- 
+	static int N, M;
+	static int[] arr;
+	static int[] card;
+	static int[] ans;
 	public static void main(String[] args) throws IOException {
- 
+		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		int N = Integer.parseInt(br.readLine());
-		int[] arr = new int[N];
-		
-		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+		StringBuilder sb = new StringBuilder();
+		StringTokenizer st;
+
+		N = Integer.parseInt(br.readLine());
+
+		arr = new int[N];
+		st = new StringTokenizer(br.readLine());
 		for(int i = 0; i < N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
-		
+
 		Arrays.sort(arr);
-		
-		int M = Integer.parseInt(br.readLine());
-		
-		st = new StringTokenizer(br.readLine()," ");
-		StringBuilder sb = new StringBuilder();
-		
+
+		M = Integer.parseInt(br.readLine());
+
+		card = new int[M];
+
+		st = new StringTokenizer(br.readLine());
 		for(int i = 0; i < M; i++) {
-			int key = Integer.parseInt(st.nextToken());
- 
-			// upperBound와 lowerBound의 차이 값을 구한다.
-			sb.append(upperBound(arr, key) - lowerBound(arr, key)).append(' ');
+			card[i] = Integer.parseInt(st.nextToken());
 		}
+
+		for(int i = 0; i < M; i++) {
+			sb.append(binarySearch(card[i]) + " ");
+		}
+
 		System.out.println(sb);
 	}
- 
-	private static int lowerBound(int[] arr, int key) {
-		int lo = 0; 
-		int hi = arr.length; 
- 
-		// lo가 hi랑 같아질 때 까지 반복
-		while (lo < hi) {
- 
-			int mid = (lo + hi) / 2; // 중간위치를 구한다.
- 
-			/*
-			 *  key 값이 중간 위치의 값보다 작거나 같을 경우
-			 *  
-			 *  (중복 원소에 대해 왼쪽으로 탐색하도록 상계를 내린다.)
-			 */
-			if (key <= arr[mid]) {
-				hi = mid;
+	public static int binarySearch(int num) {
+		//lower_bound
+		int s = 0;
+		int e = N - 1;
+		int l = e + 1;
+		while(s <= e) {
+			int mid = (s + e) / 2;
+			if(arr[mid] >= num) {
+				l = mid;
+				e = mid - 1;
+			}else {
+				s = mid + 1;
 			}
- 
-			else {
-				lo = mid + 1;
-			}
- 
 		}
- 
-		return lo;
-	}
- 
-	private static int upperBound(int[] arr, int key) {
-		int lo = 0; 
-		int hi = arr.length; 
- 
-		// lo가 hi랑 같아질 때 까지 반복
-		while (lo < hi) {
- 
-			int mid = (lo + hi) / 2; // 중간위치를 구한다.
- 
-			// key값이 중간 위치의 값보다 작을 경우
-			if (key < arr[mid]) {
-				hi = mid;
+		
+		//upper_bound
+		s = 0;
+		e = N - 1;
+		int r = e + 1;
+		while(s <= e) {
+			int mid = (s+e) / 2;
+			if(arr[mid] > num) {
+				r = mid;
+				e = mid - 1;
+			}else {
+				s = mid + 1;
 			}
-			// 중복원소의 경우 else에서 처리된다.
-			else {
-				lo = mid + 1;
-			}
- 
 		}
- 
-		return lo;
+		
+		return r - l;
 	}
-	
-	
+
 }
