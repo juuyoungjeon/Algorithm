@@ -2,9 +2,10 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static int N, M;
-	static int[] arr;
+	static int N,M;
+	static int[] res;
 	static boolean[] visited;
+	static StringBuilder sb = new StringBuilder();
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -13,25 +14,28 @@ public class Main {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		
-		arr = new int[M];
+		res = new int[M];
 		visited = new boolean[N];
 		
-		dfs(0);
+		solve(0);
+		
+		System.out.println(sb);
 	}
-	public static void dfs(int depth) {
+	public static void solve(int depth) {
 		if(depth == M) {
 			for(int i = 0; i < M; i++) {
-				System.out.print(arr[i] + " ");
+				sb.append(res[i] + " ");
+				
 			}
-			System.out.println();
+			sb.append("\n");
 			return;
 		}
 		
 		for(int i = 0; i < N; i++) {
 			if(!visited[i]) {
 				visited[i] = true;
-				arr[depth] = i+1;
-				dfs(depth+1);
+				res[depth] = i + 1;
+				solve(depth + 1);
 				visited[i] = false;
 			}
 		}
