@@ -1,12 +1,16 @@
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 public class Main {
 	static int N, M;
-	static int[] arr, result;
+	static int[] arr;
+	static int[] res;
 	static boolean[] visited;
 	static StringBuilder sb = new StringBuilder();
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException{
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -14,9 +18,9 @@ public class Main {
 		N = Integer.parseInt(st.nextToken());
 		M = Integer.parseInt(st.nextToken());
 		
-		result = new int[M];
 		arr = new int[N];
 		visited = new boolean[N];
+		res = new int[M];
 		
 		st = new StringTokenizer(br.readLine());
 		for(int i = 0; i < N; i++) {
@@ -24,21 +28,22 @@ public class Main {
 		}
 		
 		Arrays.sort(arr);
-		dfs(0, 0);
-//		dfs(0);
+		solve(0, 0);
+		
 		System.out.println(sb);
 	}
-	public static void dfs(int depth, int start) {
+	public static void solve(int depth, int start) {
 		if(depth == M) {
 			for(int i = 0; i < M; i++) {
-				sb.append(result[i] + " ");
+				sb.append(res[i] + " ");
 			}
 			sb.append("\n");
 			return;
 		}
+		
 		for(int i = start; i < N; i++) {
-			result[depth] = arr[i];
-			dfs(depth + 1, i);
+			res[depth] = arr[i];
+			solve(depth + 1, i);
 		}
 	}
 
