@@ -2,44 +2,44 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static int[] A;
-	static String input;
-	static int B, C;
-	static int ans = -1;
+	static String a;
+	static int b;
+	static int[] arr1;
 	static boolean[] visited;
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st= new StringTokenizer(br.readLine());
-		
-		input = st.nextToken();
-		A = new int[input.length()];
-		B = Integer.parseInt(st.nextToken());
-		
-		for(int i = 0; i < input.length(); i++) {
-			A[i] = input.charAt(i) -'0';
+		StringTokenizer st = new StringTokenizer(br.readLine());
+
+		a = st.nextToken();
+		b = Integer.parseInt(st.nextToken());
+
+		arr1 = new int[a.length()];
+		for(int i = 0; i < a.length(); i++) {
+			arr1[i] = a.charAt(i) - '0';
 		}
-		
-		visited = new boolean[input.length()];
-		
-		dfs(0,0);
+
+		visited = new boolean[a.length()];
+
+		solve(0,0);
 		
 		System.out.println(ans);
+
 	}
-	
-	public static void dfs(int depth, int num) {
-		if(depth == input.length()) {
+	static int ans = -1;
+	public static void solve(int depth, int num) {
+		if(depth == a.length()) {
 			ans = Math.max(ans, num);
 			return;
 		}
-		for(int i = 0; i < input.length(); i++) {
-			if(visited[i] || (A[i] == 0 && depth == 0)) continue;
-			if(num * 10 + A[i] > B) continue;
+
+		for(int i = 0; i < a.length(); i++) {
+			if(visited[i] || (arr1[i] == 0 && depth == 0)) continue;
+			if(num * 10 + arr1[i] > b) continue;
 			
 			visited[i] = true;
-			dfs(depth + 1, num * 10 + A[i]);
+			solve(depth + 1, num * 10 + arr1[i]);
 			visited[i] = false;
 		}
 	}
-
 }
