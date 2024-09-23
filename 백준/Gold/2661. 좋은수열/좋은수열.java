@@ -2,37 +2,35 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-	static int N;
 	static int[] arr = {1,2,3};
-	static char[] res;
+	static int N;
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
+
 		N = Integer.parseInt(br.readLine());
-	
-		res = new char[N];
-		
-		recur(0,"");
+
+		solve(0,"");
 		
 	}
-	public static void recur(int depth, String line) {
+	public static void solve(int depth, String num) {
 		if(depth == N) {
-			System.out.println(line);
-			System.exit(0);;
+			System.out.println(num);
+			System.exit(0);
 		}
-		
 		for(int i = 0; i < 3; i++) {
-			if(check(line + arr[i])) recur(depth + 1, line + arr[i]);
+			if(check(num + arr[i])) {
+				solve(depth + 1, num + arr[i]);
+			}
 		}
 	}
-	
-	public static boolean check(String line) {
-		for(int i = 1; i <= line.length()/2; i++) {
-			if(line.substring(line.length() - i, line.length()).equals(line.substring(line.length() - i * 2, line.length() - i)))
-				return false;
+
+	public static boolean check(String str) {
+		for(int i = 1; i <= str.length()/2; i++) {
+			if(str.substring(str.length() - i, str.length()).equals(str.substring(str.length() - i * 2, str.length()- i))){
+				return false;	
+			}
 		}
 		return true;
 	}
-
 }
