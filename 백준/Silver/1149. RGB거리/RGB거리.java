@@ -2,27 +2,48 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-
+	static int N;
+	static int[][] map, dp;
+	static int min = Integer.MAX_VALUE;
+	static int ret = Integer.MAX_VALUE;
 	public static void main(String[] args) throws IOException {
-
+		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		int n = Integer.parseInt(br.readLine());
-		int[][] DP = new int[n+1][3];
-		
-		for(int i = 1; i <= n; i++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			
-			int r = Integer.parseInt(st.nextToken());
-			int g = Integer.parseInt(st.nextToken());
-			int b = Integer.parseInt(st.nextToken());
-			
-			DP[i][0] = Math.min(DP[i-1][1], DP[i-1][2])+r;
-			DP[i][1] = Math.min(DP[i-1][0], DP[i-1][2])+g;
-			DP[i][2] = Math.min(DP[i-1][0], DP[i-1][1])+b;
-			
+		StringTokenizer st;
+
+		N = Integer.parseInt(br.readLine());
+
+		map = new int[N][4];
+		dp = new int[N][4];
+
+		for(int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for(int j = 0; j < 3; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
+			}
 		}
-		System.out.println(Math.min(DP[n][0], Math.min(DP[n][1], DP[n][2])));
+
+		for(int i = 0; i < N; i++) {
+			Arrays.fill(dp[i], -1);
+		}
+		
+		System.out.println(solve(0,3));
+	}
+	public static int solve(int cur, int prev) {
+		if(cur == N) {
+			return 0;
+		}
+		if(dp[cur][prev] != -1) return dp[cur][prev];
+		
+		ret = Integer.MAX_VALUE;
+
+		for(int i = 0; i < 3; i++) {
+			if(i == prev) continue;
+			ret = Math.min(ret, solve(cur + 1, i) + map[cur][i]);
+		}
+
+		dp[cur][prev] = ret;
+		return dp[cur][prev];
 	}
 
 }
