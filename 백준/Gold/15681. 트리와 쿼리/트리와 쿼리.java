@@ -1,12 +1,10 @@
 import java.util.*;
 import java.io.*;
 
-
 public class Main {
-	static int N,R,Q;
-	static boolean[] visited;
-	static int[] dp;
+	static int N, R, Q;
 	static ArrayList<ArrayList<Integer>> list;
+	static int[] size;
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -17,8 +15,6 @@ public class Main {
 		R = Integer.parseInt(st.nextToken());
 		Q = Integer.parseInt(st.nextToken());
 		
-		visited = new boolean[N+1];
-		dp = new int[N+1];
 		list = new ArrayList<>();
 		for(int i = 0; i <= N; i++) {
 			list.add(new ArrayList<>());
@@ -26,35 +22,30 @@ public class Main {
 		
 		for(int i = 0; i < N - 1; i++) {
 			st = new StringTokenizer(br.readLine());
-			int u = Integer.parseInt(st.nextToken());
-			int v = Integer.parseInt(st.nextToken());
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
 			
-			list.get(u).add(v);
-			list.get(v).add(u);
+			list.get(a).add(b);
+			list.get(b).add(a);
 		}
 		
-		visited[R] = true;
-		solve(R);
-		
+		size = new int[N+1];
+		for(int i = 1; i <= N; i++) {
+			size[i] = 1;
+		}
+		dfs(R,0);
 		for(int i = 0; i < Q; i++) {
-			sb.append(dp[Integer.parseInt(br.readLine())]).append("\n");
+			sb.append(size[Integer.parseInt(br.readLine())]).append("\n");
 		}
 		
 		System.out.println(sb);
-		
 	}
-	public static int solve(int idx) {
-		visited[idx] = true;
-		int cnt = 1;
-		for(int i : list.get(idx)) {
-			if(!visited[i]) {
-				visited[i] = true;
-				cnt += solve(i);
-			}
+	public static void dfs(int cur, int prev) {
+		for(int next : list.get(cur)) {
+			if(next == prev) continue;
+			dfs(next, cur);
+			size[cur] += size[next];
 		}
-		
-		return dp[idx] = cnt;
-		
 	}
 
 }
